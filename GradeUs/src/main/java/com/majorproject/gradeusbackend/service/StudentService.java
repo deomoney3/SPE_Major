@@ -101,7 +101,6 @@ public class StudentService
 //        System.out.println("this.groupRepository.findById(score.getGroupId()).get() = " + this.groupRepository.findById(score.getGroupId()).get());
 
         Score sc = Score.builder()
-                
                 .scorer(user)
                 .student(this.userRepository.findById(score.getStudentId()).get())
                 .scoreValue(score.getScoreValue())
