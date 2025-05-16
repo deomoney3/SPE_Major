@@ -162,7 +162,7 @@ public class TeacherService
         Long teacherId = classRepository.findById(classId)
                 .orElseThrow(() -> new ResourceNotFoundException("Class not found"))
                 .getTeacher()
-                .getId();
+                .getId(); 
 
         validateTeacherId(teacherId);
     }
