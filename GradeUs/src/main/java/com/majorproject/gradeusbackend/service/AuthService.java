@@ -54,6 +54,7 @@ public class AuthService
         }
     }
 
+
     public AuthResponse login(LoginRequest request)
     {
         log.info("Login function is called.");
