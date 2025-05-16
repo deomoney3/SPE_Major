@@ -36,8 +36,7 @@ public class JwtService
     {
         return SECRET_KEY;
     }
-
-
+    
     // Generate a jwt token in case a new user registers / logs without extra claims
     public String generateToken(UserDetails userDetails)
     {
