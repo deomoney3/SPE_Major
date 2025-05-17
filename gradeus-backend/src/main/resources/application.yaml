@@ -3,10 +3,13 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost:3306}/${MYSQL_DATABASE:gradeus}?useSSL=false
-    username: ${MYSQL_USER:gradeus}
-    password: ${MYSQL_PASSWORD:gradeus}
+    url: jdbc:mysql://localhost:3306/gradeus?useSSL=false
+    username: root
+    password: Pass@1234
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect

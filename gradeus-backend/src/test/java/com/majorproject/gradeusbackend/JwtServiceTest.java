@@ -2,7 +2,6 @@ package com.majorproject.gradeusbackend;
 
 import com.majorproject.gradeusbackend.service.JwtService;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -13,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.majorproject.gradeusbackend.entity.Topic;
-import com.majorproject.gradeusbackend.exceptions.ResourceNotFoundException;
 import com.majorproject.gradeusbackend.repository.TopicRepository;
 import com.majorproject.gradeusbackend.service.TeacherService;
 

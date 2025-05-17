@@ -5,8 +5,6 @@ import com.majorproject.gradeusbackend.entity.Class;
 import com.majorproject.gradeusbackend.model.GenericResponse;
 import com.majorproject.gradeusbackend.model.IdList;
 import com.majorproject.gradeusbackend.service.TeacherService;
-import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
