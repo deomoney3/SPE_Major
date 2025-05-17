@@ -1,0 +1,134 @@
+<div class="container">
+    <div class="row text-center">
+        <h1>
+            Class Name : {{currentClass?.name}}
+        </h1>
+        <h3>
+            Description : {{currentClass?.description}}
+        </h3>
+    </div>
+
+    <br>
+    <br>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h2>Groups in this class</h2>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button mat-raised-button color="primary" (click)="openAddGroupDialog()">Add Group</button>
+                    </div>
+                </div>
+                <br>
+
+                <div class="row" *ngIf="!showAllGroups">
+                    <div class="col-md-4 mb-1" *ngFor="let group of groups; let i = index;">
+                        <mat-card *ngIf="i < 3">
+                            <mat-card-header>
+                                <mat-card-title>{{ group.name }}</mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <p>{{ group.description }}</p>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-button (click)="viewGroupDetails(group)">View Details</button>
+                                <button mat-button color="warn" (click)="deleteGroup(group)">Delete</button>
+                            </mat-card-actions>
+                        </mat-card>
+                        <br>
+                        <div *ngIf="i === 0 && groups.length > 3">
+                            <button mat-raised-button color="primary" (click)="showAllGroups = true">View More</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="showAllGroups" >
+                    <div class="col-md-4 mb-1" *ngFor="let group of groups;">
+                        <mat-card>
+                            <mat-card-header>
+                                <mat-card-title>{{ group.name }}</mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <p>{{ group.description }}</p>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-button (click)="viewGroupDetails(group)">View Details</button>
+                                <button mat-button color="warn" (click)="deleteGroup(group)">Delete</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h2>Topics in this class</h2>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button mat-raised-button color="primary" (click)="openAddTopicDialog()">Add Topic</button>
+                    </div>
+                </div>
+                <br>
+
+                <div class="row" *ngIf="!showAllTopics">
+                    <div class="col-md-4 mb-1" *ngFor="let topic of topics; let i = index;">
+                        <mat-card *ngIf="i < 3">
+                            <mat-card-header>
+                                <mat-card-title>{{ topic.name }}</mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <p>{{ topic.description }}</p>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-button (click)="viewTopicDetails(topic)">View Details</button>
+                                <button mat-button color="warn" (click)="deleteTopic(topic)">Delete</button>
+                            </mat-card-actions>
+                        </mat-card>
+                        <br>
+                        <div *ngIf="i === 0 && topics.length > 3">
+                            <button mat-raised-button color="primary" (click)="showAllTopics = true">View More</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="showAllTopics">
+                    <div class="col-md-4 mb-1" *ngFor="let topic of topics;">
+                        <mat-card>
+                            <mat-card-header>
+                                <mat-card-title>{{ topic.name }}</mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <p>{{ topic.description }}</p>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-button (click)="viewTopicDetails(topic)">View Details</button>
+                                <button mat-button color="warn" (click)="deleteTopic(topic)">Delete</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

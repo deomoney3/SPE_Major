@@ -1,0 +1,44 @@
+<div class="container">
+    <!-- <div class="row text-center">
+        <h1>
+            Class Name : {{currentClass?.name}}
+        </h1>
+        <h3>
+            Description : {{currentClass?.description}}
+        </h3>
+    </div> -->
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-12">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h2>Students in this group</h2>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button mat-raised-button color="primary" (click)="openAddStudentDialog()">Add Student</button>
+                    </div>
+                </div>
+
+                <br>
+                <div class="row">
+                    <div class="col-md-4" *ngFor="let student of students;">
+                        <mat-card>
+                            <mat-card-header>
+                                <mat-card-title>{{ student.firstname }} {{student.lastname}}</mat-card-title>
+                            </mat-card-header>
+                            <mat-card-actions>
+                                <button mat-button (click)="viewStudentDetails(student)">View Details</button>
+                                <button mat-button color="warn" (click)="deleteStudent(student)">Delete</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

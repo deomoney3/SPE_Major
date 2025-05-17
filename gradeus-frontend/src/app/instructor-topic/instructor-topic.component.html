@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="row">
+
+    </div>
+    <br>
+    <div class="row">
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let group of groups" [disabled]="!group.scores.length">
+                <mat-expansion-panel-header>
+                    <b>{{ group.student.firstname }} {{group.student.lastname}} ({{ group.totalScore }})</b>
+                </mat-expansion-panel-header>
+                <mat-list>
+                    <mat-list-item *ngFor="let score of group.scores">
+                        {{ score.scoreValue }} - {{ score.scorer?.firstname}} {{ score.scorer?.lastname}}
+                        <button mat-button class="ms-auto" color="warn" aria-label="Delete" (click)="onDelete(score)">
+                            Delete
+                          </button>
+                    </mat-list-item>
+                </mat-list>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>

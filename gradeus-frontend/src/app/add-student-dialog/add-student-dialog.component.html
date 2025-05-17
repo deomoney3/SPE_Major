@@ -1,0 +1,23 @@
+<mat-form-field>
+    <mat-label>Search</mat-label>
+    <input matInput (keyup)="applyFilter($event.target)" placeholder="Search...">
+</mat-form-field>
+
+<mat-card style="height: 300px;">
+    <mat-list class="mat-horizontal-stepper">
+
+        <div *ngIf="dataSource">
+            <mat-list-item *ngFor="let item of dataSource.filteredData">
+                {{item.firstname}} {{item.lastname}} - 
+                {{item.email}}
+                <div class="ms-auto">
+                    <button mat-button color="primary" aria-label="Add" (click)="addItem(item)"
+                        class="align-items-center">
+                        Add
+                    </button>
+                </div>
+            </mat-list-item>
+        </div>
+
+    </mat-list>
+</mat-card>

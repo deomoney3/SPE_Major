@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Add Class</h2>
+<mat-dialog-content>
+    <form [formGroup]="addClassForm" (ngSubmit)="onAddClassSubmit()">
+        <div class="container">
+            <div class="row">
+                <mat-form-field>
+                    <input matInput placeholder="Name" formControlName="name" required>
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <mat-form-field>
+                    <textarea matInput placeholder="Description" formControlName="description" required></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onAddClassCancel()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" (click)="onAddClassSubmit()"
+        [disabled]="!addClassForm.valid">Add</button>
+</mat-dialog-actions>

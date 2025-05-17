@@ -1,0 +1,35 @@
+<div class="container">
+    <br>
+    <div class="row" *ngIf="membersForm">
+        <div class="col-12">
+            <form class="d-flex justify-content-center" [formGroup]="membersForm">
+
+                <div class="container">
+                    <div class="row" *ngFor="let member of members">
+
+                        <div class="col-4" style="display: flex; align-items: center; justify-content: right;">
+                            <div class="txt">
+                                {{member.firstname}} {{member.lastname}}
+                            </div>
+                        </div>
+
+                        <div class="col-4" style="display: flex; align-items: center; justify-content: center;">
+                            <div class="member-info">
+                                <mat-form-field>
+                                    <mat-label>Score</mat-label>
+                                    <input matInput type="number" formControlName="{{ member.id }}"
+                                        name="{{ member.id }}">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-4" style="display: flex; align-items: center; justify-content: left;">
+                            <button mat-raised-button color="primary" [disabled]="membersForm.get(member.id.toString())?.disabled" (click)="submitScore(member)">Submit</button>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

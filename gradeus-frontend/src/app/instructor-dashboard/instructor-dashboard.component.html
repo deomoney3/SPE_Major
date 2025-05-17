@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h2>Classes taught by {{ globalService.currentCredentials.firstname }}</h2>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button mat-raised-button color="primary" (click)="openAddClassDialog()">Add Class</button>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-4" *ngFor="let course of classes">
+                        <mat-card>
+                            <mat-card-header>
+                                <mat-card-title>{{ course.name }}</mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <p>{{ course.description }}</p>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-button (click)="viewDetails(course)">View Details</button>
+                                <button mat-button color="warn" (click)="deleteClass(course)">Delete</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
