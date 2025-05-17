@@ -36,4 +36,3 @@ public class StudentGroupMap {
     @JsonIdentityReference(alwaysAsId = true)
     private ClassGroup group;
 }
-
