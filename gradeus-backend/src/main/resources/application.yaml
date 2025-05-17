@@ -1,0 +1,12 @@
+server:
+  port: 8500
+
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost:3306}/${MYSQL_DATABASE:gradeus}?useSSL=false
+    username: ${MYSQL_USER:gradeus}
+    password: ${MYSQL_PASSWORD:gradeus}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
