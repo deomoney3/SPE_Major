@@ -35,7 +35,7 @@ pipeline {
         stage('Dockerhub backend image push') {
             steps {
                  script{
-                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                        docker.withRegistry('https://index.docker.io/gradeus/', 'docker-hub-credentials') {
                         backendImage.push()
                     }
                 }
