@@ -4,8 +4,8 @@ pipeline {
         maven 'Maven'
     }
     environment {
-        frontendRepositoryName = "deomoney3/gradeus-frontend"
-        backendRepositoryName = "deomoney3/gradeus-backend"
+        frontendRepositoryName = "deomoney721/gardeus/gradeus-frontend"
+        backendRepositoryName = "deomoney721/gradeus/gradeus-backend"
         tag = "latest"
         frontendImage = ""
         backendImage = ""
@@ -35,7 +35,7 @@ pipeline {
         stage('Dockerhub backend image push') {
             steps {
                  script{
-                        docker.withRegistry('https://index.docker.io/gradeus/', 'docker-hub-credentials') {
+                        docker.withRegistry('', 'docker-hub-credentials') {
                         backendImage.push()
                     }
                 }
