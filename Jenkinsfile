@@ -4,8 +4,8 @@ pipeline {
         maven 'Maven'
     }
     environment {
-        frontendRepositoryName = "deomai/gradeus-frontend"
-        backendRepositoryName = "deomai/gradeus-backend"
+        frontendRepositoryName = "deomani/gradeus-frontend"
+        backendRepositoryName = "deomani/gradeus-backend"
         tag = "latest"
         frontendImage = ""
         backendImage = ""
@@ -14,7 +14,7 @@ pipeline {
         stage('Fetch code from github') {
             steps {
                 git branch: 'master',
-                url: 'https://github.com/deomai/gradeUs',
+                url: 'https://github.com/deomani/gradeUs',
                 credentialsId: 'gradeus-cred'
             }
         }
