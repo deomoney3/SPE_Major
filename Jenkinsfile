@@ -4,8 +4,8 @@ pipeline {
         maven 'Maven'
     }
     environment {
-        frontendRepositoryName = "deomani/gradeus-frontend"
-        backendRepositoryName = "deomani/gradeus-backend"
+        frontendRepositoryName = "deomoney3/gradeus-frontend"
+        backendRepositoryName = "deomoney3/gradeus-backend"
         tag = "latest"
         frontendImage = ""
         backendImage = ""
