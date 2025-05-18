@@ -34,9 +34,8 @@ pipeline {
         }
         stage('Dockerhub backend image push') {
             steps {
-                script{
-                    // By default, the registry will be dockerhub
-                    docker.withRegistry('', 'dockerhub-credentials'){
+                 script{
+                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
                         backendImage.push()
                     }
                 }
