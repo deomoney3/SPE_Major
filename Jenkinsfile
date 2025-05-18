@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Fetch code from github') {
             steps {
-                git branch: 'master',
+                git branch: 'main',
                 url: 'https://github.com/deomoney3/SPE_Major/',
                 credentialsId: 'gradeus-cred'
             }
