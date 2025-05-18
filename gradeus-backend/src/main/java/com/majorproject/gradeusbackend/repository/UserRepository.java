@@ -20,7 +20,22 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findStudentsNotInGroup(Long classId);
 
     List<User> findByRole(Role role);
-
-    @Query(value = "SELECT * FROM user WHERE id IN (SELECT student_id FROM student_group_map WHERE group_id IN (SELECT DISTINCT group_id FROM class_group, student_group_map WHERE class_group_id = group_id AND student_id = ?1 AND class_id = ?2)) AND id != ?1", nativeQuery = true)
+    @Query(value = """
+    SELECT * 
+    FROM user 
+    WHERE id IN (
+        SELECT student_id 
+        FROM student_group_map 
+        WHERE group_id IN (
+            SELECT DISTINCT group_id 
+            FROM class_group 
+            JOIN student_group_map ON class_group_id = group_id 
+            WHERE student_id = ?1 AND class_id = ?2
+        )
+    ) 
+    AND id != ?1
+    """, nativeQuery = true)
     List<User> getGroupMembersInClass(Long studentId, Long classId);
+
+
 }

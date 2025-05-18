@@ -37,15 +37,17 @@ export class StudentTopicComponent implements OnInit {
       this.router.navigate(['student-dashboard']);
       return;
     }
-
+    //console.log(this.topicId)
     this.studentService.getTopicById(this.topicId).subscribe(
       (currentTopic: Topic) => {
 
         this.currentTopic = currentTopic;
+        console.log(this.currentTopic.classObj)
         this.studentService.getGroupMembersInClass(this.currentTopic.classObj).subscribe(
           (members: User[]) => {
-
+              
             this.members = members;
+            console.log(this.members);
             const formControls: any = {};
 
             for (let member of this.members) {
@@ -56,8 +58,8 @@ export class StudentTopicComponent implements OnInit {
             this.membersForm = new FormGroup(formControls);
 
             for (let member of this.members) {
-
-              this.studentService.getScore(member.id, this.topicId).subscribe(
+              console.log(member)
+              this.studentService.getScore(2, this.topicId).subscribe(
                 (scoreResponse: ScoreResponse) => {
 
                   if (scoreResponse.present) {

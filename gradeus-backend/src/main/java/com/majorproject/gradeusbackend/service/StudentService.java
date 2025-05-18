@@ -59,7 +59,9 @@ public class StudentService
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) auth.getPrincipal();
         log.info("Getting group members for user with ID: {} in class with ID: {}", user.getId(), classId);
-        return userRepository.getGroupMembersInClass(user.getId(), classId);
+        List<User> t=userRepository.getGroupMembersInClass(user.getId(), classId);
+        log.info("Group members found: {}", t);
+        return  t;
     }
 
     public Optional<Topic> findTopicById(Long id)

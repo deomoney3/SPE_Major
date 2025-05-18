@@ -93,7 +93,7 @@ public class InstructorController {
     @DeleteMapping("/group/{id}")
     public ResponseEntity<GenericResponse> deleteGroup(@PathVariable Long id) {
         teacherService.validateGroupId(id);
-
+        System.out.println("++++"+id);
         Optional<ClassGroup> optionalEntity = teacherService.findGroupById(id);
         if (optionalEntity.isPresent()) {
             teacherService.deleteGroupById(id);

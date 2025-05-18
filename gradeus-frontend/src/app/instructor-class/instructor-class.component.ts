@@ -116,7 +116,7 @@ export class InstructorClassComponent implements OnInit {
   }
 
   deleteTopic(topic: Topic) {
-    this.instructorService.deleteGroup(topic.topicId).subscribe(
+    this.instructorService.deleteTopic(topic.topicId).subscribe(
       (value: String) => {
         const index = this.topics.indexOf(topic);
         if (index >= 0) {
