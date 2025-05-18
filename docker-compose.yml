@@ -1,0 +1,38 @@
+version: '3'
+services:
+  mysqldb:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=gradeus
+      - MYSQL_PASSWORD=gradeus
+      - MYSQL_DATABASE=gradeus
+    ports:
+      - 3307:3306
+    volumes:
+      - db:/var/lib/mysql
+
+  backend:
+    build: ./gradeus-backend
+    restart: always
+    image: gradeus-backend
+    ports:
+      - 8500:8500
+    depends_on:
+      - mysqldb
+    environment:
+      - MYSQL_HOST=mysqldb
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=gradeus
+      - MYSQL_PASSWORD=gradeus
+      - MYSQL_DATABASE=gradeus
+      - MYSQL_URL=3306
+
+  frontend:
+    build: ./gradeus-frontend
+    image: gradeus-frontend
+    ports:
+      - 4200:4200
+
+volumes:
+  db: 

@@ -1,0 +1,42 @@
+apiVersion: apps/v1 
+kind: Deployment    
+metadata:              
+  name: backend-deployment
+spec:                
+  selector:         
+    matchLabels:
+      app: backend-deployment
+  replicas: 1        
+  template:
+    metadata:
+      labels:        
+        app: backend-deployment
+    spec:
+      containers:
+        - name: backend-deployment
+          image: lovyparhar/gradeus-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8500                
+          env:   # Setting Environmental Variables
+          - name: MYSQL_HOST   # Setting Database host address from configMap
+            valueFrom: 
+              configMapKeyRef:
+                name: db-conf  # name of configMap
+                key: host
+          - name: MYSQL_DATABASE  # Setting Database name from configMap
+            valueFrom:
+              configMapKeyRef:
+                name: db-conf 
+                key: name
+          - name: MYSQL_USER  # Setting Database username from Secret
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials # Secret Name
+                key: username
+          - name: MYSQL_PASSWORD # Setting Database password from Secret
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: password     
+        

@@ -1,0 +1,20 @@
+apiVersion: apps/v1 # For versions before 1.9.0 use apps/v1beta2
+kind: Deployment    
+metadata:   # Data that helps  uniquely identify the object (using name, UID and namespace)          
+  name: gradeus-frontend-deployment
+spec:  # What state you desire for the object              
+  selector:  # The selector field defines how the deployment finds which pod to manage       
+    matchLabels:
+      app: gradeus-frontend-deployment
+  replicas: 1  # Tells the deployment to run 3 pods matching the template      
+  template:
+    metadata:
+      labels:  # Labels are used as indentifying attributes for objects such as pods and replication controller.      
+        app: gradeus-frontend-deployment
+    spec:
+      containers:
+        - name: gradeus-frontend-deployment
+          image: lovyparhar/gradeus-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80

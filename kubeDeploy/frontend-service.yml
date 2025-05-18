@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gradeus-frontend-service
+  labels:
+    name: gradeus-frontend-deployment
+spec:
+  ports:
+    - port: 80        
+      targetPort: 80  
+      protocol: TCP   
+  selector:           
+    app: gradeus-frontend-deployment
+  type: LoadBalancer
