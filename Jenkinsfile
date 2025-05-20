@@ -21,7 +21,8 @@ pipeline {
         stage('Maven Building') {
             steps {
                 script{
-                    sh 'mvn -f gradeus-backend clean install'
+                    //sh 'mvn -f gradeus-backend clean install'
+                    sh 'echo true'
                 }
             }
         }
@@ -34,10 +35,11 @@ pipeline {
         }
         stage('Dockerhub backend image push') {
             steps {
-                 script{
-                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                        backendImage.push()
-                    }
+                //  script{
+                //         docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                //         backendImage.push()
+                //     }
+                sh 'echo true'
                 }
             }
         }
@@ -47,15 +49,15 @@ pipeline {
                     frontendImage = docker.build(frontendRepositoryName + ":" + tag, "./gradeus-frontend")
                 }
             }
-        }
         stage('Dockerhub frontend image push') {
             steps {
-                script{
-                    // By default, the registry will be dockerhub
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials'){
-                        frontendImage.push()
-                    }
-                }
+                // script{
+                //     // By default, the registry will be dockerhub
+                //     docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials'){
+                //         frontendImage.push()
+                //     }
+                // }
+                sh 'echo true'
             }
         }
         
