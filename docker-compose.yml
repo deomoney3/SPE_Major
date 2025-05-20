@@ -4,8 +4,8 @@ services:
     image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=gradeus
-      - MYSQL_PASSWORD=gradeus
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=Pass@1234
       - MYSQL_DATABASE=gradeus
     ports:
       - 3307:3306
@@ -23,8 +23,8 @@ services:
     environment:
       - MYSQL_HOST=mysqldb
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=gradeus
-      - MYSQL_PASSWORD=gradeus
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=Pass@1234
       - MYSQL_DATABASE=gradeus
       - MYSQL_URL=3306
 
