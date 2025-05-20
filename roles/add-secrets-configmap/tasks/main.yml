@@ -1,0 +1,8 @@
+---
+  - name: Adding secrets and config maps to kubernetes cluster
+    ansible.builtin.shell: |
+      kubectl apply -f kubeDeploy/mysql-root-credentials.yml
+      kubectl apply -f kubeDeploy/mysql-credentials.yml
+      kubectl apply -f kubeDeploy/mysql-configmap.yml
+    environment:
+      KUBECONFIG: "/Users/deomani/confKube"

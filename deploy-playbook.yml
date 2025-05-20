@@ -1,44 +1,15 @@
 ---
   - name: "Deploying on the kubernetes cluster"
-    hosts: localhost
-    connection: local 
-    
-    tasks:
-    # - name: Azure cli login
-    #   ansible.builtin.shell:
-    #     cmd: "az login -u {{ lookup('env', 'MJP_AZURE_USER') }} -p {{ lookup('env', 'MJP_AZURE_PASSWORD') }}"
-
-    - name: Deploying logstash and filebeats inside the kubernetes cluster
-      ansible.builtin.shell: |
-        helm upgrade --install filebeat kubeDeploy/filebeat
-        helm upgrade --install logstash kubeDeploy/logstash
-      environment:
-        KUBECONFIG: "/Users/deomani/confKube"
-
-    - name: Adding secrets and config maps to kubernetes cluster
-      ansible.builtin.shell: |
-        kubectl apply -f kubeDeploy/mysql-root-credentials.yml
-        kubectl apply -f kubeDeploy/mysql-credentials.yml
-        kubectl apply -f kubeDeploy/mysql-configmap.yml
-      environment:
-        KUBECONFIG: "/Users/deomani/confKube"
-
-    - name: Deleting older application deployment
-      ansible.builtin.shell: |
-        kubectl delete -f kubeDeploy/mysql-deployment.yml --ignore-not-found=true
-        kubectl delete -f kubeDeploy/backend-deployment.yml --ignore-not-found=true
-        kubectl delete -f kubeDeploy/frontend-deployment.yml --ignore-not-found=true
-      environment:
-        KUBECONFIG: "/Users/deomani/confKube"
-
-    - name: Deploying application to kubernetes cluster
-      ansible.builtin.shell: |
-        kubectl apply -f kubeDeploy/mysql-service.yml
-        kubectl apply -f kubeDeploy/mysql-pvc.yml
-        kubectl apply -f kubeDeploy/mysql-deployment.yml
-        kubectl apply -f kubeDeploy/backend-service.yml
-        kubectl apply -f kubeDeploy/backend-deployment.yml
-        kubectl apply -f kubeDeploy/frontend-service.yml
-        kubectl apply -f kubeDeploy/frontend-deployment.yml
-      environment:
-        KUBECONFIG: "/Users/deomani/confKube"
+    hosts: all
+    # become: true
+    remote_user: deomnai
+    environment:
+      DOCKER_HOST: "unix:///var/run/docker.sock"
+    vars_files:
+      - my_vault.yml
+    vars:
+      docker_user: deomani721
+    roles:
+      - deploy-filebeats-logstash
+      - add-secrets-cofigmap
+      - refresh-deployments

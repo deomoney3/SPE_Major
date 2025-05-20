@@ -60,8 +60,12 @@ pipeline {
         }
         
         stage('Ansible Deployment') {
-            steps {
-              ansiblePlaybook installation: 'Ansible', playbook: 'deploy-playbook.yml'
+             steps {
+                sh '''
+                    echo "1234" > vault_pass.txt
+                    sudo -u deomani /usr/bin/ansible-playbook -i ./inventory ./ansible_playbook.yml --vault-password-file vault_pass.txt
+                    rm -f vault_pass.txt
+                '''
             }
         }
 

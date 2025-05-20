@@ -1,0 +1,20 @@
+---
+  - name: Deleting older application deployment
+    ansible.builtin.shell: |
+      kubectl delete -f kubeDeploy/mysql-deployment.yml --ignore-not-found=true
+      kubectl delete -f kubeDeploy/backend-deployment.yml --ignore-not-found=true
+      kubectl delete -f kubeDeploy/frontend-deployment.yml --ignore-not-found=true
+    environment:
+      KUBECONFIG: "/Users/deomani/confKube"
+
+  - name: Deploying application to kubernetes cluster
+    ansible.builtin.shell: |
+      kubectl apply -f kubeDeploy/mysql-service.yml
+      kubectl apply -f kubeDeploy/mysql-pvc.yml
+      kubectl apply -f kubeDeploy/mysql-deployment.yml
+      kubectl apply -f kubeDeploy/backend-service.yml
+      kubectl apply -f kubeDeploy/backend-deployment.yml
+      kubectl apply -f kubeDeploy/frontend-service.yml
+      kubectl apply -f kubeDeploy/frontend-deployment.yml
+    environment:
+      KUBECONFIG: "/Users/deomani/confKube"
