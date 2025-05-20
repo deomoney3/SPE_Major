@@ -63,7 +63,7 @@ pipeline {
              steps {
                 sh '''
                     echo "1234" > vault_pass.txt
-                    sudo -u deomani /usr/bin/ansible-playbook -i ./inventory ./ansible_playbook.yml --vault-password-file vault_pass.txt
+                    sudo -u deomani /usr/bin/ansible-playbook -i ./inventory ./deploy-playbook.yml --vault-password-file vault_pass.txt
                     rm -f vault_pass.txt
                 '''
             }
