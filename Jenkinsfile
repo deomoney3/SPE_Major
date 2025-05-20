@@ -73,7 +73,6 @@ pipeline {
             steps {
                 // Use Minikube kubeconfig automatically if it's available locally
                 sh '''
-                    kubectl config use-context minikube
                     helm upgrade --install filebeat kubeDeploy/filebeat
                     helm upgrade --install logstash kubeDeploy/logstash
                 '''
@@ -83,7 +82,6 @@ pipeline {
         stage('Adding secrets and config maps to kubernetes cluster') {
             steps {
                 sh '''
-                    kubectl config use-context minikube
                     kubectl apply -f kubeDeploy/mysql-root-credentials.yml
                     kubectl apply -f kubeDeploy/mysql-credentials.yml
                     kubectl apply -f kubeDeploy/mysql-configmap.yml
@@ -94,7 +92,6 @@ pipeline {
         stage('Deleting older application deployment') {
             steps {
                 sh '''
-                    kubectl config use-context minikube
                     kubectl delete -f kubeDeploy/mysql-deployment.yml --ignore-not-found=true
                     kubectl delete -f kubeDeploy/backend-deployment.yml --ignore-not-found=true
                     kubectl delete -f kubeDeploy/frontend-deployment.yml --ignore-not-found=true
@@ -105,7 +102,6 @@ pipeline {
         stage('Deploying application to kubernetes cluster') {
             steps {
                 sh '''
-                    kubectl config use-context minikube
                     kubectl apply -f kubeDeploy/mysql-service.yml
                     kubectl apply -f kubeDeploy/mysql-pvc.yml
                     kubectl apply -f kubeDeploy/mysql-deployment.yml
