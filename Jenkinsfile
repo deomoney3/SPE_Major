@@ -40,7 +40,6 @@ pipeline {
                 //         backendImage.push()
                 //     }
                 sh 'echo true'
-                }
             }
         }
         stage('Docker image creation for frontend') {
@@ -49,6 +48,7 @@ pipeline {
                     frontendImage = docker.build(frontendRepositoryName + ":" + tag, "./gradeus-frontend")
                 }
             }
+        }
         stage('Dockerhub frontend image push') {
             steps {
                 // script{
@@ -56,7 +56,6 @@ pipeline {
                 //     docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials'){
                 //         frontendImage.push()
                 //     }
-                // }
                 sh 'echo true'
             }
         }
