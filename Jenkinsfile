@@ -69,47 +69,51 @@ pipeline {
                 '''
             }
         }
-
         stage('Deploying logstash and filebeats inside the kubernetes cluster') {
             steps {
-                withKubeConfig([credentialsId: 'aksConfig', serverUrl: 'https://gradeus-dns-9q6us9tx.hcp.eastus.azmk8s.io']) {
-                    sh 'helm upgrade --install filebeat kubeDeploy/filebeat'
-                    sh 'helm upgrade --install logstash kubeDeploy/logstash'
-                }
+                // Use Minikube kubeconfig automatically if it's available locally
+                sh '''
+                    kubectl config use-context minikube
+                    helm upgrade --install filebeat kubeDeploy/filebeat
+                    helm upgrade --install logstash kubeDeploy/logstash
+                '''
             }
         }
 
         stage('Adding secrets and config maps to kubernetes cluster') {
             steps {
-                withKubeConfig([credentialsId: 'aksConfig', serverUrl: 'https://gradeus-dns-9q6us9tx.hcp.eastus.azmk8s.io']) {
-                    sh 'kubectl apply -f kubeDeploy/mysql-root-credentials.yml'
-                    sh 'kubectl apply -f kubeDeploy/mysql-credentials.yml'
-                    sh 'kubectl apply -f kubeDeploy/mysql-configmap.yml'
-                }
+                sh '''
+                    kubectl config use-context minikube
+                    kubectl apply -f kubeDeploy/mysql-root-credentials.yml
+                    kubectl apply -f kubeDeploy/mysql-credentials.yml
+                    kubectl apply -f kubeDeploy/mysql-configmap.yml
+                '''
             }
         }
 
         stage('Deleting older application deployment') {
             steps {
-                withKubeConfig([credentialsId: 'aksConfig', serverUrl: 'https://gradeus-dns-9q6us9tx.hcp.eastus.azmk8s.io']) {
-                    sh 'kubectl delete -f kubeDeploy/mysql-deployment.yml --ignore-not-found=true'
-                    sh 'kubectl delete -f kubeDeploy/backend-deployment.yml --ignore-not-found=true'
-                    sh 'kubectl delete -f kubeDeploy/frontend-deployment.yml --ignore-not-found=true'
-                }
+                sh '''
+                    kubectl config use-context minikube
+                    kubectl delete -f kubeDeploy/mysql-deployment.yml --ignore-not-found=true
+                    kubectl delete -f kubeDeploy/backend-deployment.yml --ignore-not-found=true
+                    kubectl delete -f kubeDeploy/frontend-deployment.yml --ignore-not-found=true
+                '''
             }
         }
 
         stage('Deploying application to kubernetes cluster') {
             steps {
-                withKubeConfig([credentialsId: 'aksConfig', serverUrl: 'https://gradeus-dns-9q6us9tx.hcp.eastus.azmk8s.io']) {
-                    sh 'kubectl apply -f kubeDeploy/mysql-service.yml'
-                    sh 'kubectl apply -f kubeDeploy/mysql-pvc.yml'
-                    sh 'kubectl apply -f kubeDeploy/mysql-deployment.yml'
-                    sh 'kubectl apply -f kubeDeploy/backend-service.yml'
-                    sh 'kubectl apply -f kubeDeploy/backend-deployment.yml'
-                    sh 'kubectl apply -f kubeDeploy/frontend-service.yml'
-                    sh 'kubectl apply -f kubeDeploy/frontend-deployment.yml'
-                }
+                sh '''
+                    kubectl config use-context minikube
+                    kubectl apply -f kubeDeploy/mysql-service.yml
+                    kubectl apply -f kubeDeploy/mysql-pvc.yml
+                    kubectl apply -f kubeDeploy/mysql-deployment.yml
+                    kubectl apply -f kubeDeploy/backend-service.yml
+                    kubectl apply -f kubeDeploy/backend-deployment.yml
+                    kubectl apply -f kubeDeploy/frontend-service.yml
+                    kubectl apply -f kubeDeploy/frontend-deployment.yml
+                '''
             }
         }
     }

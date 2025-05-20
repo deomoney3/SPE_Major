@@ -3,5 +3,3 @@
     ansible.builtin.shell: |
         helm upgrade --install filebeat kubeDeploy/filebeat
         helm upgrade --install logstash kubeDeploy/logstash
-    environment:
-        KUBECONFIG: "/Users/deomani/confKube"
