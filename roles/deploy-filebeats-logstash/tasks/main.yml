@@ -1,7 +1,7 @@
 ---
   - name: Deploying logstash and filebeats inside the kubernetes cluster
-      ansible.builtin.shell: |
+    ansible.builtin.shell: |
         helm upgrade --install filebeat kubeDeploy/filebeat
         helm upgrade --install logstash kubeDeploy/logstash
-      environment:
+    environment:
         KUBECONFIG: "/Users/deomani/confKube"
