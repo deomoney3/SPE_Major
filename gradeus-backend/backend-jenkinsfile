@@ -1,0 +1,58 @@
+
+pipeline {
+    agent any
+    tools {
+        maven 'Maven'
+    }
+    environment {
+        backendRepositoryName = "deomoney721/gradeus-backend"
+        tag = "latest"
+        backendImage = ""
+    }
+    stages {
+        stage('Fetch code from github') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/deomoney3/SPE_Major/',
+                credentialsId: 'gradeus-cred'
+            }
+        }
+        stage('Maven Testing') {
+            steps {
+                script{
+                    dir('gradeus-backend') {
+                        sh 'mvn clean test'
+                    }
+                }
+            }
+        }
+        stage('Maven Building') {
+            steps {
+                script{
+                    dir('gradeus-backend') {
+                        sh './mvnw clean package -DskipTests'
+                    }
+                }
+            }
+        }
+        stage('Docker image creation for backend') {
+            steps {
+                script{
+                    dir('gradeus-backend') {
+                        backendImage = docker.build(backendRepositoryName + ":" + tag, ".")
+                    }
+                }
+            }
+        }
+        stage('Dockerhub backend image push') {
+            steps {
+                 script{
+                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                        backendImage.push()
+                    }
+                }
+            }
+        }
+
+    }
+}

@@ -1,90 +1,37 @@
 pipeline {
     agent any
-    tools {
-        maven 'Maven'
-    }
-    environment {
-        frontendRepositoryName = "deomoney721/gradeus-frontend"
-        backendRepositoryName = "deomoney721/gradeus-backend"
-        tag = "latest"
-        frontendImage = ""
-        backendImage = ""
-    }
+    
     stages {
-        stage('Fetch code from github') {
+        stage('Detect Changed Folders') {
             steps {
-                git branch: 'main',
-                url: 'https://github.com/deomoney3/SPE_Major/',
-                credentialsId: 'gradeus-cred'
-            }
-        }
-        stage('Maven Building') {
-            steps {
-                script{
-                    dir('gradeus-backend') {
-                        sh './mvnw clean package -DskipTests'
-                    }
-                }
-            }
-        }
-        stage('Docker image creation for backend') {
-            steps {
-                script{
-                    dir('gradeus-backend') {
-                        backendImage = docker.build(backendRepositoryName + ":" + tag, ".")
-                    }
-                }
-            }
-        }
-        stage('Dockerhub backend image push') {
-            steps {
-                 script{
-                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                        backendImage.push()
-                    }
-                }
-            }
-        }
-         stage('Install Dependencies') {
-            steps {
-                dir('gradeus-frontend') {
-                    sh 'npm ci' 
-                }
-            }
-        }
+                script {
+                    def commits = sh(script: "git rev-list HEAD --count", returnStdout: true).trim().toInteger()
 
-        stage('Build') {
-            steps {
-                dir('gradeus-frontend') {
-                    sh 'npm run build'
-                }
-            }
-        }
+                    if (commits < 2) {
+                        echo "First commit detected. Triggering all jobs."
+                        build job: 'gradeus-backend'
+                        build job: 'gradeus-frontend'
+                        return
+                    }
 
-        stage('Lint') {
-            steps {
-                dir('gradeus-frontend') {
-                    sh '''
-                        npm run lint || echo "Lint warnings found, continuing..."
-                    '''  
-                }
-            }
-        }
-        stage('Docker image creation for frontend') {
-            steps {
-                script{
-                    dir('gradeus-frontend') {
-                    frontendImage = docker.build(frontendRepositoryName + ":" + tag, ".")
-                }
-                }
-            }
-        }
-        stage('Dockerhub frontend image push') {
-            steps {
-                script{
-                    // By default, the registry will be dockerhub
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials'){
-                        frontendImage.push()
+                    def changeLog = sh(script: "git diff --name-only HEAD~1 HEAD", returnStdout: true).trim().split("\n")
+                    def backendChanged = changeLog.any { it.startsWith("gradeus-backend/") || it.startsWith("kubeDeploy/backend-deployment.yml") || it.startsWith("kubeDeploy/backend-service.yml") || it.startsWith("gradeus-backend/backend-jenkinsfile")}
+                    def frontendChanged = changeLog.any { it.startsWith("gradeus-frontend/") || it.startsWith("kubeDeploy/frontend-deployment.yml") || it.startsWith("kubeDeploy/frontend-service.yml") || it.startsWith("gradeus-frontend/frontend-jenkinsfile")}
+
+                    echo "Changed files:\n${changeLog.join('\n')}"
+                    echo "Backend changed: ${backendChanged}"
+                    echo "Frontend changed: ${frontendChanged}"
+
+                    if (backendChanged) {
+                        build job: 'gradeus-backend'
+                    }
+                    if (frontendChanged) {
+                        build job: 'gradeus-frontend'
+                    }
+
+
+                    if (!backendChanged && !frontendChanged) {
+                        echo "No relevant changes found. Skipping downstream builds."
                     }
                 }
             }
@@ -92,7 +39,6 @@ pipeline {
         
         stage('Ansible Deployment') {
              steps {
-                // sh 'minikube start'
                 sh '''
                     echo "1234" > vault_pass.txt
                     sudo -u deomani /usr/bin/ansible-playbook -i ./inventory ./deploy-playbook.yml --vault-password-file vault_pass.txt
@@ -109,39 +55,6 @@ pipeline {
         //     }
         // }
 
-
-        stage('Adding secrets and config maps to kubernetes cluster') {
-            steps {
-                sh '''
-                    kubectl apply -f kubeDeploy/mysql-root-credentials.yml
-                    kubectl apply -f kubeDeploy/mysql-credentials.yml
-                    kubectl apply -f kubeDeploy/mysql-configmap.yml
-                '''
-            }
-        }
-
-        stage('Deleting older application deployment') {
-            steps {
-                sh '''
-                    kubectl delete -f kubeDeploy/mysql-deployment.yml --ignore-not-found=true
-                    kubectl delete -f kubeDeploy/backend-deployment.yml --ignore-not-found=true
-                    kubectl delete -f kubeDeploy/frontend-deployment.yml --ignore-not-found=true
-                '''
-            }
-        }
-
-        stage('Deploying application to kubernetes cluster') {
-            steps {
-                sh '''
-                    kubectl apply -f kubeDeploy/mysql-service.yml
-                    kubectl apply -f kubeDeploy/mysql-pvc.yml
-                    kubectl apply -f kubeDeploy/mysql-deployment.yml
-                    kubectl apply -f kubeDeploy/backend-service.yml
-                    kubectl apply -f kubeDeploy/backend-deployment.yml
-                    kubectl apply -f kubeDeploy/frontend-service.yml
-                    kubectl apply -f kubeDeploy/frontend-deployment.yml
-                '''
-            }
-        }
+        
     }
 }
