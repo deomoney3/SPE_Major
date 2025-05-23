@@ -6,10 +6,10 @@ metadata:
     name: backend-deployment
 spec:
   ports:
-    # - nodePort: 30163 
+    - nodePort: 30163 
     - port: 8500      
       targetPort: 8500  
       protocol: TCP
   selector:           
     app: backend-deployment
-  # type: NodePort       
+  type: NodePort       
