@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://mysql:3306/gradeus??createDatabaseIfNotExist=true
+    url: jdbc:mysql://mysql:3306/gradeus?createDatabaseIfNotExist=true
     username: root
     password: Pass@1234
     driver-class-name: com.mysql.cj.jdbc.Driver
