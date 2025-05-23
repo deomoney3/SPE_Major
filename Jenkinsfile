@@ -74,7 +74,7 @@ pipeline {
             steps {
                 script{
                     dir('gradeus-frontend') {
-                    frontendImage = docker.build(frontendRepositoryName + ":" + tag, "./gradeus-frontend")
+                    frontendImage = docker.build(frontendRepositoryName + ":" + tag, ".")
                 }
                 }
             }
