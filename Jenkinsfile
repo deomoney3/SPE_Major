@@ -38,6 +38,7 @@ pipeline {
                         docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
                         backendImage.push()
                     }
+                }
             }
         }
         stage('Docker image creation for frontend') {
@@ -54,8 +55,8 @@ pipeline {
                     docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials'){
                         frontendImage.push()
                     }
+                }
             }
-        }
         }
         
         stage('Ansible Deployment') {
@@ -112,5 +113,4 @@ pipeline {
             }
         }
     }
-        }
 }
