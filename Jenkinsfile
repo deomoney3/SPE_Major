@@ -21,8 +21,7 @@ pipeline {
         stage('Maven Building') {
             steps {
                 script{
-                    //sh 'mvn -f gradeus-backend clean install'
-                    sh 'echo true'
+                    sh './mvnw clean package -DskipTests'
                 }
             }
         }
@@ -35,11 +34,10 @@ pipeline {
         }
         stage('Dockerhub backend image push') {
             steps {
-                //  script{
-                //         docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                //         backendImage.push()
-                //     }
-                sh 'echo true'
+                 script{
+                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                        backendImage.push()
+                    }
             }
         }
         stage('Docker image creation for frontend') {
@@ -51,12 +49,11 @@ pipeline {
         }
         stage('Dockerhub frontend image push') {
             steps {
-                // script{
-                //     // By default, the registry will be dockerhub
-                //     docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials'){
-                //         frontendImage.push()
-                //     }
-                sh 'echo true'
+                script{
+                    // By default, the registry will be dockerhub
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials'){
+                        frontendImage.push()
+                    }
             }
         }
         
@@ -67,17 +64,18 @@ pipeline {
                     sudo -u deomani /usr/bin/ansible-playbook -i ./inventory ./deploy-playbook.yml --vault-password-file vault_pass.txt
                     rm -f vault_pass.txt
                 '''
+                sh 'minikube start'
             }
         }
-        stage('Deploying logstash and filebeats inside the kubernetes cluster') {
-            steps {
-                // Use Minikube kubeconfig automatically if it's available locally
-                sh '''
-                    helm upgrade --install filebeat kubeDeploy/filebeat
-                    helm upgrade --install logstash kubeDeploy/logstash
-                '''
-            }
-        }
+        // stage('Deploying Prometheus and Grafana') {
+        //     steps {
+        //         sh '''
+        //             kubectl apply -f kubeDeploy/monitoring/prometheus/
+        //             kubectl apply -f kubeDeploy/monitoring/grafana/
+        //         '''
+        //     }
+        // }
+
 
         stage('Adding secrets and config maps to kubernetes cluster') {
             steps {
