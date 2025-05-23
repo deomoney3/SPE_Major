@@ -18,24 +18,21 @@ pipeline {
                 credentialsId: 'gradeus-cred'
             }
         }
-        stage('Maven Dependencies Installation') {
-            steps {
-                script{
-                    sh 'mvn clean install -DskipTests'
-                }
-            }
-        }
         stage('Maven Building') {
             steps {
                 script{
-                    sh './mvnw clean package -DskipTests'
+                    dir('gradeus-backend') {
+                        sh './mvnw clean package -DskipTests'
+                    }
                 }
             }
         }
         stage('Docker image creation for backend') {
             steps {
                 script{
-                    backendImage = docker.build(backendRepositoryName + ":" + tag, "./gradeus-backend")
+                    dir('gradeus-backend') {
+                        backendImage = docker.build(backendRepositoryName + ":" + tag, ".")
+                    }
                 }
             }
         }
@@ -51,7 +48,9 @@ pipeline {
         stage('Docker image creation for frontend') {
             steps {
                 script{
+                    dir('gradeus-frontend') {
                     frontendImage = docker.build(frontendRepositoryName + ":" + tag, "./gradeus-frontend")
+                }
                 }
             }
         }
