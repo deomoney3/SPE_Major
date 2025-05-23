@@ -18,6 +18,13 @@ pipeline {
                 credentialsId: 'gradeus-cred'
             }
         }
+        stage('Maven Dependencies Installation') {
+            steps {
+                script{
+                    sh 'mvn clean install -DskipTests'
+                }
+            }
+        }
         stage('Maven Building') {
             steps {
                 script{
