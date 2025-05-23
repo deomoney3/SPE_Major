@@ -1,15 +1,16 @@
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: backend-deployment
   labels:
     name: backend-deployment
 spec:
-  ports:
-    - nodePort: 30163 
-    - port: 8500      
-      targetPort: 8500  
-      protocol: TCP
-  selector:           
+  selector:
     app: backend-deployment
-  type: NodePort       
+  type: NodePort
+  ports:
+    - name: http
+      port: 8500
+      targetPort: 8500
+      nodePort: 30163
+      protocol: TCP

@@ -1,42 +1,41 @@
-apiVersion: apps/v1 
-kind: Deployment    
-metadata:              
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: backend-deployment
-spec:                
-  selector:         
+spec:
+  replicas: 1
+  selector:
     matchLabels:
       app: backend-deployment
-  replicas: 1        
   template:
     metadata:
-      labels:        
+      labels:
         app: backend-deployment
     spec:
       containers:
-        - name: backend-deployment
+        - name: backend
           image: deomoney721/gradeus-backend:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 8500                
-          env:   # Setting Environmental Variables
-          - name: MYSQL_HOST   # Setting Database host address from configMap
-            valueFrom: 
-              configMapKeyRef:
-                name: db-conf  # name of configMap
-                key: host
-          - name: MYSQL_DATABASE  # Setting Database name from configMap
-            valueFrom:
-              configMapKeyRef:
-                name: db-conf 
-                key: name
-          - name: MYSQL_USER  # Setting Database username from Secret
-            valueFrom:
-              secretKeyRef:
-                name: db-credentials # Secret Name
-                key: username
-          - name: MYSQL_PASSWORD # Setting Database password from Secret
-            valueFrom:
-              secretKeyRef:
-                name: db-credentials
-                key: password     
-        
+            - containerPort: 8500
+          env:
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: db-conf
+                  key: host
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: db-conf
+                  key: name
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: password

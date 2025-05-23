@@ -12,5 +12,4 @@ spec:
       targetPort: 3306
   selector:       # mysql Pod Should contain same labels
     app: mysql
-    tier: database
-  clusterIP: None  # We Use DNS, Thus ClusterIP is not relevant
+    tier: database  # We Use DNS, Thus ClusterIP is not relevant
