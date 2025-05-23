@@ -45,6 +45,31 @@ pipeline {
                 }
             }
         }
+         stage('Install Dependencies') {
+            steps {
+                dir('gradeus-frontend') {
+                    sh 'npm ci' 
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir('gradeus-frontend') {
+                    sh 'npm run build'
+                }
+            }
+        }
+
+        stage('Lint') {
+            steps {
+                dir('gradeus-frontend') {
+                    sh '''
+                        npm run lint || echo "Lint warnings found, continuing..."
+                    '''  
+                }
+            }
+        }
         stage('Docker image creation for frontend') {
             steps {
                 script{
