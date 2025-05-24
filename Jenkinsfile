@@ -46,15 +46,33 @@ pipeline {
                 '''
             }
         }
-        // stage('Deploying Prometheus and Grafana') {
-        //     steps {
-        //         sh '''
-        //             kubectl apply -f kubeDeploy/monitoring/prometheus/
-        //             kubectl apply -f kubeDeploy/monitoring/grafana/
-        //         '''
-        //     }
-        // }
+        stage('Deploying Prometheus and Grafana') {
+            steps {
+                script {
+                    // Make sure these paths match your repo structure
+                    def prometheusFiles = [
+                        'kubeDeploy/monitoring/prometheus/prometheus-config.yml',
+                        'kubeDeploy/monitoring/prometheus/prometheus-deploy.yml',
+                        'kubeDeploy/monitoring/prometheus/prometheus-rbac.yml'
+                    ]
 
-        
+                    def grafanaFiles = [
+                        'kubeDeploy/monitoring/grafana/grafana-config.yml',
+                        'kubeDeploy/monitoring/grafana/grafana-pvc.yml',
+                        'kubeDeploy/monitoring/grafana/grafana-deploy.yml'
+                    ]
+
+                    // Apply Prometheus YAMLs
+                    for (file in prometheusFiles) {
+                        sh "kubectl apply -f ${file}"
+                    }
+
+                    // Apply Grafana YAMLs
+                    for (file in grafanaFiles) {
+                        sh "kubectl apply -f ${file}"
+                    }
+                }
+            }
+        }
     }
 }
