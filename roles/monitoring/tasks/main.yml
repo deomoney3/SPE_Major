@@ -1,4 +1,13 @@
 ---
+  - name: Deleting older prometheus and grafana deployment
+    ansible.builtin.shell: |
+      kubectl delete -f kubeDeploy/monitoring/prometheus/prometheus-deploy.yml --ignore-not-found=true
+      kubectl delete -f kubeDeploy/monitoring/prometheus/prometheus-config.yml --ignore-not-found=true
+      kubectl delete -f kubeDeploy/monitoring/prometheus/prometheus-rbac.yml --ignore-not-found=true
+      kubectl delete -f kubeDeploy/monitoring/grafana/grafana-deploy.yml --ignore-not-found=true
+      kubectl delete -f kubeDeploy/monitoring/grafana/grafana-config.yml --ignore-not-found=true
+      kubectl delete -f kubeDeploy/monitoring/grafana/grafana-pvc.yml --ignore-not-found=true
+
   - name: Adding Prometheus and Grafana Monitoring Setup to Kubernetes cluster
     ansible.builtin.shell: |
       kubectl apply -f kubeDeploy/monitoring/prometheus/prometheus-config.yml
