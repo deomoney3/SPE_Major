@@ -1,0 +1,9 @@
+---
+  - name: Adding Prometheus and Grafana Monitoring Setup to Kubernetes cluster
+    ansible.builtin.shell: |
+      kubectl apply -f kubeDeploy/monitoring/prometheus/prometheus-config.yml
+      kubectl apply -f kubeDeploy/monitoring/prometheus/prometheus-deploy.yml
+      kubectl apply -f kubeDeploy/monitoring/prometheus/prometheus-rbac.yml
+      kubectl apply -f kubeDeploy/monitoring/grafana/grafana-config.yml
+      kubectl apply -f kubeDeploy/monitoring/grafana/grafana-pvc.yml
+      kubectl apply -f kubeDeploy/monitoring/grafana/grafana-deploy.yml

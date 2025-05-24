@@ -11,4 +11,5 @@
       docker_user: deomani721
     roles:
       - add-secrets-configmap
+      - monitoring
       - refresh-deployments
