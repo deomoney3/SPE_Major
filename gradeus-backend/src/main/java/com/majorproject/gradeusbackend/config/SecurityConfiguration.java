@@ -36,7 +36,6 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/**","/v3/api-docs/**","/swagger-ui/**")
                 .permitAll()
-                .requestMatchers("/actuator/prometheus").permitAll()
                 .requestMatchers("/instructor/**")
                 .hasRole("INSTRUCTOR")
                 .requestMatchers("/student/**")
