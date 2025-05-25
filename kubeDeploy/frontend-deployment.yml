@@ -1,15 +1,15 @@
-apiVersion: apps/v1 
-kind: Deployment    
-metadata:   # Data that helps  uniquely identify the object (using name, UID and namespace)          
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: gradeus-frontend-deployment
-spec:               
-  selector:        
+spec:
+  replicas: 1
+  selector:
     matchLabels:
       app: gradeus-frontend-deployment
-  replicas: 1       
   template:
     metadata:
-      labels:        
+      labels:
         app: gradeus-frontend-deployment
     spec:
       containers:
@@ -18,3 +18,29 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: gradeus-frontend-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: gradeus-frontend-deployment
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
