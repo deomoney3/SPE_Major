@@ -1,4 +1,3 @@
-# Configure 'Deployment' of mysql server
 apiVersion: apps/v1
 kind: Deployment
 metadata:
